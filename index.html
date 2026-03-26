@@ -9,7 +9,7 @@
     <title>Trading Journal | Elite Edition</title>
     
     <!-- Premium Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
@@ -22,7 +22,7 @@
         }
         
         * { box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background: var(--bg-main); background-image: var(--bg-gradient); color: var(--text); margin: 0; min-height: 100vh; overflow-x: hidden; }
+        body { background: var(--bg-main); background-image: var(--bg-gradient); color: var(--text); margin: 0; min-height: 100vh; overflow-x: hidden; display: flex; }
 
         /* --- APP NAVIGATION --- */
         .sidebar { 
@@ -33,7 +33,7 @@
         .side-logo { margin-bottom: 50px; fill: var(--gold); width: 32px; filter: drop-shadow(0 0 10px rgba(255,207,64,0.3)); }
         .nav-item { 
             color: #555870; font-size: 24px; cursor: pointer; background: none; border: none; 
-            margin-bottom: 40px; transition: 0.3s; position: relative; width: 100%; display: flex; justify-content: center;
+            margin-bottom: 40px; transition: 0.3s; position: relative; width: 100%; display: flex; justify-content: center; align-items: center;
         }
         .nav-item.active { color: var(--gold); transform: scale(1.1); }
         .nav-item.active::after { 
@@ -41,11 +41,18 @@
             width: 4px; height: 28px; background: var(--gold); border-radius: 0 4px 4px 0; box-shadow: 0 0 15px var(--gold); 
         }
 
-        /* --- MAIN LAYOUT --- */
-        .main-content { margin-left: 85px; padding: 30px 25px; max-width: 1200px; margin-right: auto; }
+        /* --- MAIN LAYOUT (DESKTOP CENTERED) --- */
+        .main-content { 
+            margin-left: 85px; 
+            width: calc(100% - 85px); 
+            padding: 40px 50px; 
+            display: flex; 
+            justify-content: center; 
+        }
+        .content-wrapper { width: 100%; max-width: 1200px; }
         
         .top-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-        .brand-section h1 { margin: 0; font-weight: 800; letter-spacing: -0.5px; font-size: 24px; }
+        .brand-section h1 { margin: 0; font-weight: 800; letter-spacing: -0.5px; font-size: 24px; text-transform: uppercase; }
         .brand-quote { margin-top: 4px; font-size: 12px; color: var(--gold); font-style: italic; opacity: 0.8; letter-spacing: 0.5px; }
         .top-fund-display { font-weight: 800; color: var(--green); background: rgba(16, 185, 129, 0.1); padding: 8px 16px; border-radius: 12px; border: 1px solid rgba(16, 185, 129, 0.2); }
 
@@ -57,10 +64,10 @@
         .card { background: var(--card-glass); backdrop-filter: blur(20px); border-radius: 20px; padding: 22px; border: 1px solid var(--border); box-shadow: 0 10px 40px rgba(0,0,0,0.3); margin-bottom: 20px; }
         .label-row { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; font-size: 11px; color: var(--dim); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
         
-        .four-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 20px; }
-        .small-stat { background: rgba(255,255,255,0.02); padding: 18px; border-radius: 16px; border: 1px solid var(--border); transition: 0.3s; }
+        .four-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 20px; }
+        .small-stat { background: rgba(255,255,255,0.02); padding: 22px; border-radius: 16px; border: 1px solid var(--border); transition: 0.3s; }
         .small-stat:hover { transform: translateY(-3px); border-color: rgba(255,255,255,0.1); }
-        .val-large { font-size: 22px; font-weight: 800; margin-top: 5px;}
+        .val-large { font-size: 26px; font-weight: 800; margin-top: 5px;}
 
         .dashboard-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; margin-bottom: 20px; }
         
@@ -71,11 +78,7 @@
         .tile-loss { border-left-color: var(--red); background: linear-gradient(90deg, rgba(239,68,68,0.05) 0%, transparent 100%); }
 
         /* --- FORM ELEMENTS --- */
-        input, select, textarea { 
-            width: 100%; background: rgba(0, 0, 0, 0.3); border: 1px solid var(--border); 
-            padding: 16px; border-radius: 12px; color: white; font-size: 15px; margin-bottom: 15px; 
-            transition: 0.3s; outline: none; 
-        }
+        input, select, textarea { width: 100%; background: rgba(0, 0, 0, 0.3); border: 1px solid var(--border); padding: 16px; border-radius: 12px; color: white; font-size: 15px; margin-bottom: 15px; transition: 0.3s; outline: none; }
         input:focus, select:focus, textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(124, 115, 230, 0.15); }
         
         .toggle-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 18px; }
@@ -88,7 +91,7 @@
         .save-btn { background: #fff; color: #000; width: 100%; padding: 18px; border-radius: 14px; font-weight: 800; font-size: 16px; border: none; cursor: pointer; transition: 0.3s; }
         .save-btn:active { transform: scale(0.98); }
 
-        /* --- JOURNAL LOG --- */
+        /* --- JOURNAL & BANK LOGS --- */
         .journal-card { display: flex; flex-direction: column; position: relative; overflow: hidden; }
         .journal-card::before { content: ''; position: absolute; left: 0; top: 0; width: 4px; height: 100%; background: #444; }
         .journal-card.profit::before { background: var(--green); }
@@ -97,26 +100,26 @@
         .del-btn { position: absolute; top: 15px; right: 15px; background: rgba(239,68,68,0.1); color: var(--red); border: none; padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; }
         .trade-specs { display: flex; flex-wrap: wrap; gap: 20px; font-size: 12px; color: var(--dim); border-top: 1px solid var(--border); padding-top: 12px; margin-top: 10px; }
 
+        .tx-row { display:flex; justify-content:space-between; align-items:center; padding: 16px; border-bottom: 1px solid var(--border); }
+        .tx-row:last-child { border-bottom: none; }
+
         /* --- TOAST NOTIFICATION --- */
         #toast { position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%); background: var(--green); color: #000; padding: 12px 24px; border-radius: 30px; font-weight: 700; transition: 0.4s; z-index: 9999; box-shadow: 0 10px 30px rgba(16, 185, 129, 0.4); }
         #toast.show { bottom: 100px; }
 
         /* =========================================
-           MOBILE RESPONSIVENESS (MOBILE APP FEEL)
+           MOBILE RESPONSIVENESS
         ========================================= */
         @media (max-width: 768px) {
             .sidebar { 
                 width: 100%; height: 75px; flex-direction: row; justify-content: space-around; 
                 top: auto; bottom: 0; border-right: none; border-top: 1px solid var(--border); 
-                padding: 0 10px; padding-bottom: env(safe-area-inset-bottom); 
+                padding: 0 5px; padding-bottom: env(safe-area-inset-bottom); 
             }
             .side-logo { display: none; }
             .nav-item { margin: 0; height: 60px; font-size: 22px; align-items: center; }
-            .nav-item.active::after { 
-                top: 0; left: 50%; transform: translateX(-50%); 
-                width: 30px; height: 3px; border-radius: 0 0 4px 4px; 
-            }
-            .main-content { margin-left: 0; width: 100%; padding: 20px 15px 100px 15px; }
+            .nav-item.active::after { top: 0; left: 50%; transform: translateX(-50%); width: 30px; height: 3px; border-radius: 0 0 4px 4px; }
+            .main-content { margin-left: 0; width: 100%; padding: 20px 15px 100px 15px; display: block; }
             .four-grid { grid-template-columns: 1fr 1fr; }
             .dashboard-grid { grid-template-columns: 1fr; }
             .top-header { flex-direction: column; align-items: flex-start; gap: 10px; }
@@ -127,116 +130,149 @@
 </head>
 <body>
 
-    <!-- Mobile Bottom Nav / Desktop Sidebar -->
+    <!-- SIDEBAR / BOTTOM NAV -->
     <nav class="sidebar">
         <svg class="side-logo" viewBox="0 0 24 24"><path d="M3.5,18.5L9.5,12.5L13.5,16.5L22,6.92L20.59,5.5L13.5,13.5L9.5,9.5L2,17L3.5,18.5Z" /></svg>
         <button class="nav-item active" onclick="showTab('home', this)">📊</button>
-        <button class="nav-item" onclick="showTab('add', this)">＋</button>
+        <button class="nav-item" onclick="showTab('add', this)" style="font-size: 42px; font-weight: 900; line-height: 0.8; padding-bottom: 5px;">+</button>
         <button class="nav-item" onclick="showTab('log', this)">📖</button>
+        <button class="nav-item" onclick="showTab('bank', this)">🏦</button>
         <button class="nav-item" onclick="resetData()" style="font-size: 18px;">⚙️</button>
     </nav>
 
+    <!-- WRAPPER TO CENTER CONTENT ON DESKTOP -->
     <main class="main-content">
-        <header class="top-header">
-            <div class="brand-section">
-                <h1 id="dynamic-title">TRADING JOURNAL</h1>
-                <div id="dynamic-quote" class="brand-quote">"Trade the plan, not the emotion."</div>
-            </div>
-            <div id="top-fund-display" class="top-fund-display">₹10,000</div>
-        </header>
-
-        <!-- DASHBOARD VIEW -->
-        <div id="view-home" class="view active">
-            <div class="card" style="text-align:center; border: 1px solid var(--gold); background: linear-gradient(180deg, rgba(255,207,64,0.08) 0%, transparent 100%); padding: 30px;">
-                <div class="label-row" style="justify-content:center; color: var(--gold)">CURRENT CAPITAL FUND</div>
-                <div id="main-balance" style="font-size:42px; font-weight:900; color:var(--gold); letter-spacing: -1px;">₹10,000</div>
-            </div>
-
-            <div class="four-grid">
-                <div class="small-stat"><div class="label-row">Trades</div><div id="stat-total" class="val-large">0</div></div>
-                <div class="small-stat"><div class="label-row">Win Rate</div><div id="stat-win" class="val-large" style="color:var(--green)">0%</div></div>
-                <div class="small-stat"><div class="label-row">Profit Factor</div><div id="stat-pf" class="val-large" style="color:var(--accent)">0.0</div></div>
-                <div class="small-stat"><div class="label-row">Net P&L</div><div id="stat-net" class="val-large">₹0</div></div>
-            </div>
-
-            <div class="dashboard-grid">
-                <div class="card" style="height: 350px; padding-bottom: 40px;">
-                    <div class="label-row" style="color:var(--gold)">Performance Graph</div>
-                    <canvas id="equityChart"></canvas>
+        <div class="content-wrapper">
+            
+            <header class="top-header">
+                <div class="brand-section">
+                    <h1 id="dynamic-title">TRADING JOURNAL</h1>
+                    <div id="dynamic-quote" class="brand-quote">"Trade the plan, not the emotion."</div>
                 </div>
-                <div style="display: flex; flex-direction: column; gap: 20px;">
-                    <!-- Latest Lesson Restored -->
-                    <div class="card" style="flex: 1;">
-                        <div class="label-row" style="color:var(--accent)">Latest Lesson</div>
-                        <div id="home-lesson" style="font-size: 14px; color: #ddd; line-height: 1.5; font-weight: 500;">No lessons logged yet.</div>
+                <div id="top-fund-display" class="top-fund-display">₹0</div>
+            </header>
+
+            <!-- DASHBOARD VIEW -->
+            <div id="view-home" class="view active">
+                <div class="card" style="text-align:center; border: 1px solid var(--gold); background: linear-gradient(180deg, rgba(255,207,64,0.08) 0%, transparent 100%); padding: 30px;">
+                    <div class="label-row" style="justify-content:center; color: var(--gold)">CURRENT CAPITAL FUND</div>
+                    <div id="main-balance" style="font-size:42px; font-weight:900; color:var(--gold); letter-spacing: -1px;">₹0</div>
+                </div>
+
+                <div class="four-grid">
+                    <div class="small-stat"><div class="label-row">Trades</div><div id="stat-total" class="val-large">0</div></div>
+                    <div class="small-stat"><div class="label-row">Win Rate</div><div id="stat-win" class="val-large" style="color:var(--green)">0%</div></div>
+                    <div class="small-stat"><div class="label-row">Profit Factor</div><div id="stat-pf" class="val-large" style="color:var(--accent)">0.0</div></div>
+                    <div class="small-stat"><div class="label-row">Net P&L</div><div id="stat-net" class="val-large">₹0</div></div>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="card" style="height: 350px; padding-bottom: 40px;">
+                        <div class="label-row" style="color:var(--gold)">Performance Graph</div>
+                        <canvas id="equityChart"></canvas>
                     </div>
-                    <!-- Market Focus Restored -->
-                    <div class="card" style="flex: 1;">
-                        <div class="label-row" style="color:var(--gold)">Market Focus</div>
-                        <div id="market-stats" style="font-size: 16px; font-weight: 700; color: #fff;">Waiting for data...</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="label-row" style="color:var(--accent); justify-content: space-between;">
-                    <span>Recent Activity</span>
-                    <span style="font-size: 10px; cursor: pointer; color: var(--text);" onclick="showTab('log', document.querySelectorAll('.nav-item')[2])">VIEW ALL ➔</span>
-                </div>
-                <div class="history-strip" id="home-history-strip"></div>
-            </div>
-        </div>
-
-        <!-- ADD TRADE VIEW -->
-        <div id="view-add" class="view">
-            <div class="card" style="max-width: 800px; margin: 0 auto;">
-                <div class="label-row">Market</div>
-                <!-- Original Options restored -->
-                <select id="t-market">
-                    <option>Crypto (BTC) ₿</option>
-                    <option>Gold (XAU/USD) 🏆</option>
-                    <option>Forex / Stocks</option>
-                </select>
-
-                <div class="toggle-row">
-                    <button class="btn-toggle active-long" id="btn-long" onclick="setSide('LONG')">LONG</button>
-                    <button class="btn-toggle" id="btn-short" onclick="setSide('SHORT')">SHORT</button>
-                </div>
-                <div class="toggle-row">
-                    <button class="btn-toggle active-ongoing" id="btn-ongoing" onclick="setStatus('ONGOING')">ONGOING</button>
-                    <button class="btn-toggle" id="btn-finished" onclick="setStatus('FINISHED')">FINISHED</button>
-                </div>
-
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px;">
-                    <!-- Original Lot Size and Fees restored -->
-                    <div><label class="label-row">Lot Size</label><input type="number" step="any" id="t-qty" class="clearable" placeholder="0.5"></div>
-                    <div><label class="label-row">Fees</label><input type="number" step="any" id="t-fees" class="clearable" placeholder="0.00"></div>
-                </div>
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px;">
-                    <!-- Original Strategy and Emotion (Input type text) restored -->
-                    <div><label class="label-row">Strategy</label><input type="text" id="t-strat" class="clearable" placeholder="Breakout"></div>
-                    <div><label class="label-row">Emotion</label><input type="text" id="t-emotion" class="clearable" placeholder="Calm"></div>
-                </div>
-
-                <label class="label-row">Lessons / Mistakes</label>
-                <textarea id="t-notes" class="clearable" rows="3" placeholder="Explain the mistake or why this was a good trade..."></textarea>
-
-                <!-- Original Manual Settlement restored & Always visible -->
-                <div style="background: rgba(255,207,64,0.05); padding: 20px; border-radius: 20px; border: 1px solid var(--gold); margin-top: 20px;">
-                    <div class="label-row" style="color:var(--gold)">Manual Settlement</div>
-                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                        <div><label class="label-row" style="color:var(--green)">➕ PROFIT</label><input type="number" step="any" id="t-profit" class="clearable" style="border-color:var(--green)"></div>
-                        <div><label class="label-row" style="color:var(--red)">➖ LOSS</label><input type="number" step="any" id="t-loss" class="clearable" style="border-color:var(--red)"></div>
+                    <div style="display: flex; flex-direction: column; gap: 20px;">
+                        <div class="card" style="flex: 1;">
+                            <div class="label-row" style="color:var(--accent)">Latest Lesson</div>
+                            <div id="home-lesson" style="font-size: 14px; color: #ddd; line-height: 1.5; font-weight: 500;">No lessons logged yet.</div>
+                        </div>
+                        <div class="card" style="flex: 1;">
+                            <div class="label-row" style="color:var(--gold)">Market Focus</div>
+                            <div id="market-stats" style="font-size: 16px; font-weight: 700; color: #fff;">Waiting for data...</div>
+                        </div>
                     </div>
                 </div>
 
-                <button class="save-btn" style="margin-top: 25px;" onclick="saveTrade()">COMMIT TO JOURNAL</button>
+                <div class="card">
+                    <div class="label-row" style="color:var(--accent); justify-content: space-between;">
+                        <span>Recent Activity</span>
+                        <span style="font-size: 10px; cursor: pointer; color: var(--text);" onclick="showTab('log', document.querySelectorAll('.nav-item')[2])">VIEW ALL ➔</span>
+                    </div>
+                    <div class="history-strip" id="home-history-strip"></div>
+                </div>
             </div>
-        </div>
 
-        <!-- JOURNAL LOG VIEW -->
-        <div id="view-log" class="view">
-            <div id="journal-container" style="max-width: 800px; margin: 0 auto;"></div>
+            <!-- ADD TRADE VIEW -->
+            <div id="view-add" class="view">
+                <div class="card" style="max-width: 800px; margin: 0 auto;">
+                    <div class="label-row">Market</div>
+                    <select id="t-market"><option>Crypto (BTC) ₿</option><option>Gold (XAU/USD) 🏆</option><option>Forex / Stocks</option></select>
+                    <div class="toggle-row">
+                        <button class="btn-toggle active-long" id="btn-long" onclick="setSide('LONG')">LONG</button>
+                        <button class="btn-toggle" id="btn-short" onclick="setSide('SHORT')">SHORT</button>
+                    </div>
+                    <div class="toggle-row">
+                        <button class="btn-toggle active-ongoing" id="btn-ongoing" onclick="setStatus('ONGOING')">ONGOING</button>
+                        <button class="btn-toggle" id="btn-finished" onclick="setStatus('FINISHED')">FINISHED</button>
+                    </div>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px;">
+                        <div><label class="label-row">Lot Size</label><input type="number" step="any" id="t-qty" class="clearable" placeholder="0.5"></div>
+                        <div><label class="label-row">Fees</label><input type="number" step="any" id="t-fees" class="clearable" placeholder="0.00"></div>
+                    </div>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px;">
+                        <div><label class="label-row">Strategy</label><input type="text" id="t-strat" class="clearable" placeholder="Breakout"></div>
+                        <div><label class="label-row">Emotion</label><input type="text" id="t-emotion" class="clearable" placeholder="Calm"></div>
+                    </div>
+                    <label class="label-row">Lessons / Mistakes</label>
+                    <textarea id="t-notes" class="clearable" rows="3" placeholder="Explain the mistake or why this was a good trade..."></textarea>
+                    <div style="background: rgba(255,207,64,0.05); padding: 20px; border-radius: 20px; border: 1px solid var(--gold); margin-top: 20px;">
+                        <div class="label-row" style="color:var(--gold)">Manual Settlement</div>
+                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                            <div><label class="label-row" style="color:var(--green)">➕ PROFIT</label><input type="number" step="any" id="t-profit" class="clearable" style="border-color:var(--green)"></div>
+                            <div><label class="label-row" style="color:var(--red)">➖ LOSS</label><input type="number" step="any" id="t-loss" class="clearable" style="border-color:var(--red)"></div>
+                        </div>
+                    </div>
+                    <button class="save-btn" style="margin-top: 25px;" onclick="saveTrade()">COMMIT TO JOURNAL</button>
+                </div>
+            </div>
+
+            <!-- JOURNAL LOG VIEW -->
+            <div id="view-log" class="view">
+                <div id="journal-container" style="max-width: 800px; margin: 0 auto;"></div>
+            </div>
+
+            <!-- NEW BANK & FUNDS VIEW -->
+            <div id="view-bank" class="view">
+                <div class="card" style="text-align:center; border: 1px solid var(--accent); background: linear-gradient(180deg, rgba(124,115,230,0.08) 0%, transparent 100%); padding: 30px;">
+                    <div class="label-row" style="justify-content:center; color: var(--accent)">AVAILABLE TRADING BALANCE</div>
+                    <div id="bank-balance" style="font-size:42px; font-weight:900; color:#fff; letter-spacing: -1px;">₹0</div>
+                </div>
+
+                <div class="card" style="max-width: 600px; margin: 0 auto 30px;">
+                    <div class="label-row">Manage Capital</div>
+                    <input type="number" step="any" id="tx-amount" placeholder="Enter Amount (₹)" style="margin-bottom: 0;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px;">
+                        <button class="save-btn" style="background: rgba(16, 185, 129, 0.1); color: var(--green); border: 1px solid var(--green);" onclick="processTx('DEPOSIT')">⬇️ DEPOSIT</button>
+                        <button class="save-btn" style="background: rgba(239, 68, 68, 0.1); color: var(--red); border: 1px solid var(--red);" onclick="processTx('WITHDRAW')">⬆️ WITHDRAW</button>
+                    </div>
+                </div>
+
+                <!-- DEPOSITS SECTION (CHART + HISTORY) -->
+                <div class="dashboard-grid">
+                    <div class="card" style="height: 350px;">
+                        <div class="label-row" style="color:var(--green)">Deposit Growth Chart</div>
+                        <canvas id="depositChart"></canvas>
+                    </div>
+                    <div class="card" style="max-height: 350px; overflow-y: auto;">
+                        <div class="label-row" style="color:var(--green)">Deposit History</div>
+                        <div id="deposit-history-container"></div>
+                    </div>
+                </div>
+
+                <!-- WITHDRAWALS SECTION (CHART + HISTORY) -->
+                <div class="dashboard-grid">
+                    <div class="card" style="height: 350px;">
+                        <div class="label-row" style="color:var(--red)">Withdrawal Chart</div>
+                        <canvas id="withdrawChart"></canvas>
+                    </div>
+                    <div class="card" style="max-height: 350px; overflow-y: auto;">
+                        <div class="label-row" style="color:var(--red)">Withdrawal History</div>
+                        <div id="withdraw-history-container"></div>
+                    </div>
+                </div>
+
+            </div>
+
         </div>
     </main>
 
@@ -244,8 +280,9 @@
 
     <script>
         // Data Initialization
-        let fund = parseFloat(localStorage.getItem('tj_elite_fund_v2')) || 10000;
+        let fund = localStorage.getItem('tj_elite_fund_v2') !== null ? parseFloat(localStorage.getItem('tj_elite_fund_v2')) : 0;
         let trades = JSON.parse(localStorage.getItem('tj_elite_trades_v2')) ||[];
+        let transactions = JSON.parse(localStorage.getItem('tj_elite_txs_v2')) ||[]; 
         let side = 'LONG'; let status = 'ONGOING';
 
         // --- Navigation ---
@@ -259,35 +296,17 @@
             const title = document.getElementById('dynamic-title');
             const quote = document.getElementById('dynamic-quote');
 
-            if(id === 'log') {
-                title.innerText = "TRADING BRAIN";
-                quote.innerText = '"A loss is only a mistake if you don\'t learn from it."';
-                renderJournal();
-            } else if(id === 'add') {
-                title.innerText = "NEW ENTRY";
-                quote.innerText = '"Plan the trade, trade the plan."';
-            } else {
-                title.innerText = "TRADING JOURNAL";
-                quote.innerText = '"Trade the plan, not the emotion."';
-                renderHome();
-            }
+            if(id === 'log') { title.innerText = "TRADING BRAIN"; quote.innerText = '"A loss is only a mistake if you don\'t learn from it."'; renderJournal(); } 
+            else if(id === 'add') { title.innerText = "NEW ENTRY"; quote.innerText = '"Plan the trade, trade the plan."'; } 
+            else if(id === 'bank') { title.innerText = "FUND MANAGEMENT"; quote.innerText = '"Protect your capital at all costs."'; renderBank(); } 
+            else { title.innerText = "TRADING JOURNAL"; quote.innerText = '"Trade the plan, not the emotion."'; renderHome(); }
             window.scrollTo(0,0);
         }
 
-        // --- Form Toggles ---
-        function setSide(s) {
-            side = s;
-            document.getElementById('btn-long').classList.toggle('active-long', s === 'LONG');
-            document.getElementById('btn-short').classList.toggle('active-short', s === 'SHORT');
-        }
+        // --- Core Trade Logic ---
+        function setSide(s) { side = s; document.getElementById('btn-long').classList.toggle('active-long', s === 'LONG'); document.getElementById('btn-short').classList.toggle('active-short', s === 'SHORT'); }
+        function setStatus(s) { status = s; document.getElementById('btn-ongoing').classList.toggle('active-ongoing', s === 'ONGOING'); document.getElementById('btn-finished').classList.toggle('active-finished', s === 'FINISHED'); }
 
-        function setStatus(s) {
-            status = s;
-            document.getElementById('btn-ongoing').classList.toggle('active-ongoing', s === 'ONGOING');
-            document.getElementById('btn-finished').classList.toggle('active-finished', s === 'FINISHED');
-        }
-
-        // --- Core Logic ---
         function saveTrade() {
             const p = parseFloat(document.getElementById('t-profit').value) || 0;
             const l = parseFloat(document.getElementById('t-loss').value) || 0;
@@ -297,10 +316,8 @@
             if(status === 'FINISHED') { net = p - l - fees; }
 
             const entry = {
-                id: Date.now(), 
-                market: document.getElementById('t-market').value,
-                pnl: net, grossP: p, grossL: l, fees: fees,
-                side: side, status: status,
+                id: Date.now(), market: document.getElementById('t-market').value,
+                pnl: net, grossP: p, grossL: l, fees: fees, side: side, status: status,
                 qty: document.getElementById('t-qty').value || '-',
                 strat: document.getElementById('t-strat').value || 'Manual',
                 emotion: document.getElementById('t-emotion').value || 'Calm',
@@ -312,7 +329,6 @@
             if(status === 'FINISHED') fund += net;
             
             saveToStorage();
-            
             document.querySelectorAll('.clearable').forEach(i => i.value = '');
             showToast("Entry Saved!");
             showTab('home', document.querySelectorAll('.nav-item')[0]);
@@ -322,9 +338,7 @@
             if(!confirm("Delete this entry forever?")) return;
             const index = trades.findIndex(t => t.id === id);
             if(index > -1) {
-                if(trades[index].status === 'FINISHED') {
-                    fund -= trades[index].pnl; 
-                }
+                if(trades[index].status === 'FINISHED') { fund -= trades[index].pnl; }
                 trades.splice(index, 1);
                 saveToStorage();
                 renderJournal();
@@ -332,43 +346,58 @@
             }
         }
 
+        // --- BANK/FUND LOGIC ---
+        function processTx(type) {
+            const amt = parseFloat(document.getElementById('tx-amount').value);
+            if(!amt || amt <= 0) { alert("Please enter a valid amount."); return; }
+            if(type === 'WITHDRAW' && amt > fund) { alert("Insufficient balance! You cannot withdraw more than you have."); return; }
+
+            const entry = {
+                id: Date.now(), type: type, amount: amt,
+                date: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
+            };
+
+            transactions.push(entry);
+            if(type === 'DEPOSIT') fund += amt;
+            if(type === 'WITHDRAW') fund -= amt;
+
+            saveToStorage();
+            document.getElementById('tx-amount').value = '';
+            showToast(`${type} Successful!`);
+            renderBank();
+        }
+
         function saveToStorage() {
             localStorage.setItem('tj_elite_fund_v2', fund);
             localStorage.setItem('tj_elite_trades_v2', JSON.stringify(trades));
+            localStorage.setItem('tj_elite_txs_v2', JSON.stringify(transactions)); 
         }
 
-        // --- Rendering ---
+        // --- Rendering Logic ---
         function renderHome() {
             document.getElementById('top-fund-display').innerText = `₹${fund.toLocaleString()}`;
             document.getElementById('main-balance').innerText = `₹${fund.toLocaleString()}`;
             
             const closed = trades.filter(t => t.status === 'FINISHED');
             document.getElementById('stat-total').innerText = closed.length;
-            
             const wins = closed.filter(t => t.pnl > 0);
             document.getElementById('stat-win').innerText = closed.length ? Math.round((wins.length / closed.length) * 100) + '%' : '0%';
-            
             document.getElementById('stat-net').innerText = `₹${closed.reduce((a, b) => a + b.pnl, 0).toFixed(0)}`;
 
-            // Advanced Profit Factor Math
             let grossProfits = closed.reduce((acc, t) => acc + (t.grossP || 0), 0);
             let grossLosses = closed.reduce((acc, t) => acc + (t.grossL || 0), 0);
             let pf = grossLosses === 0 ? (grossProfits > 0 ? '∞' : '1.0') : (grossProfits / grossLosses).toFixed(2);
             document.getElementById('stat-pf').innerText = pf;
 
-            // Restored Latest Lesson
             const lastLesson = trades.slice().reverse().find(t => t.note && t.note !== 'No lesson recorded.');
             document.getElementById('home-lesson').innerText = lastLesson ? `"${lastLesson.note}"` : "No lessons logged yet.";
             
-            // Restored & Activated Market Focus
             if(trades.length > 0) {
                 const marketCounts = {};
                 trades.forEach(t => { marketCounts[t.market] = (marketCounts[t.market] || 0) + 1; });
                 const topMarket = Object.keys(marketCounts).reduce((a, b) => marketCounts[a] > marketCounts[b] ? a : b);
                 document.getElementById('market-stats').innerText = `Most Traded:\n${topMarket}`;
-            } else {
-                document.getElementById('market-stats').innerText = "Waiting for data...";
-            }
+            } else { document.getElementById('market-stats').innerText = "Waiting for data..."; }
 
             const strip = document.getElementById('home-history-strip');
             if(trades.length === 0) { strip.innerHTML = `<div style="color:var(--dim); font-size: 13px;">No history yet.</div>`; }
@@ -386,7 +415,6 @@
         function renderJournal() {
             const container = document.getElementById('journal-container');
             if(trades.length === 0) { container.innerHTML = `<p style="color:var(--dim); text-align:center;">Your journal is empty.</p>`; return; }
-            
             container.innerHTML = trades.slice().reverse().map(t => `
                 <div class="card journal-card ${t.status === 'FINISHED' ? (t.pnl >= 0 ? 'profit' : 'loss') : ''}">
                     <button class="del-btn" onclick="deleteTrade(${t.id})">Delete</button>
@@ -396,23 +424,77 @@
                     </div>
                     <div style="font-size: 16px; font-weight: 700; color:#fff;">${t.side} - ${t.market}</div>
                     <div style="font-size: 14px; font-weight: 500; color: #ddd; line-height: 1.5; margin: 12px 0;">"${t.note}"</div>
-                    
-                    <!-- Original Trade Specs Restored -->
-                    <div class="trade-specs">
-                        <div><b>STRATEGY:</b> ${t.strat}</div>
-                        <div><b>EMOTION:</b> ${t.emotion}</div>
-                        <div><b>LOT SIZE:</b> ${t.qty}</div>
-                        <div><b>FEES:</b> ₹${t.fees || 0}</div>
-                    </div>
+                    <div class="trade-specs"><div><b>STRATEGY:</b> ${t.strat}</div><div><b>EMOTION:</b> ${t.emotion}</div><div><b>LOT SIZE:</b> ${t.qty}</div><div><b>FEES:</b> ₹${t.fees || 0}</div></div>
                 </div>`).join('');
+        }
+
+        // --- NEW SEPARATE LOGS & CHARTS FOR BANK ---
+        function renderBank() {
+            document.getElementById('bank-balance').innerText = `₹${fund.toLocaleString()}`;
+            document.getElementById('top-fund-display').innerText = `₹${fund.toLocaleString()}`; 
+
+            const deposits = transactions.filter(t => t.type === 'DEPOSIT');
+            const withdraws = transactions.filter(t => t.type === 'WITHDRAW');
+
+            // Deposit History List
+            const dContainer = document.getElementById('deposit-history-container');
+            if(deposits.length === 0) { dContainer.innerHTML = `<div style="color:var(--dim); font-size:13px; text-align:center; padding: 20px;">No deposits yet.</div>`; } 
+            else {
+                dContainer.innerHTML = deposits.slice().reverse().map(tx => `
+                    <div class="tx-row">
+                        <div><div style="font-weight: 800; color: var(--green)">${tx.type}</div><div style="font-size: 11px; color: var(--dim); margin-top:4px;">${tx.date}</div></div>
+                        <div style="font-weight: 800; font-size: 18px; color: var(--green)">+ ₹${tx.amount.toLocaleString()}</div>
+                    </div>`).join('');
+            }
+
+            // Withdrawal History List
+            const wContainer = document.getElementById('withdraw-history-container');
+            if(withdraws.length === 0) { wContainer.innerHTML = `<div style="color:var(--dim); font-size:13px; text-align:center; padding: 20px;">No withdrawals yet.</div>`; } 
+            else {
+                wContainer.innerHTML = withdraws.slice().reverse().map(tx => `
+                    <div class="tx-row">
+                        <div><div style="font-weight: 800; color: var(--red)">${tx.type}</div><div style="font-size: 11px; color: var(--dim); margin-top:4px;">${tx.date}</div></div>
+                        <div style="font-weight: 800; font-size: 18px; color: var(--red)">- ₹${tx.amount.toLocaleString()}</div>
+                    </div>`).join('');
+            }
+
+            renderBankCharts(deposits, withdraws);
+        }
+
+        function renderBankCharts(deposits, withdraws) {
+            // Deposit Chart (Green)
+            const dCtx = document.getElementById('depositChart').getContext('2d');
+            if(window.dChart) window.dChart.destroy();
+            window.dChart = new Chart(dCtx, {
+                type: 'bar',
+                data: {
+                    labels: deposits.length ? deposits.map(d => d.date) : ['No Data'],
+                    datasets:[{ label: 'Deposit', data: deposits.length ? deposits.map(d => d.amount) : [0], backgroundColor: 'rgba(16, 185, 129, 0.4)', borderColor: '#10b981', borderWidth: 2, borderRadius: 6 }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: {display: false} }, scales: { y: {grid: {color: 'rgba(255,255,255,0.05)'}, ticks: { color: '#8e8e93' }} } }
+            });
+
+            // Withdrawal Chart (Red)
+            const wCtx = document.getElementById('withdrawChart').getContext('2d');
+            if(window.wChart) window.wChart.destroy();
+            window.wChart = new Chart(wCtx, {
+                type: 'bar',
+                data: {
+                    labels: withdraws.length ? withdraws.map(w => w.date) : ['No Data'],
+                    datasets:[{ label: 'Withdrawal', data: withdraws.length ? withdraws.map(w => w.amount) : [0], backgroundColor: 'rgba(239, 68, 68, 0.4)', borderColor: '#ef4444', borderWidth: 2, borderRadius: 6 }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: {display: false} }, scales: { y: {grid: {color: 'rgba(255,255,255,0.05)'}, ticks: { color: '#8e8e93' }} } }
+            });
         }
 
         function renderChart() {
             const ctx = document.getElementById('equityChart').getContext('2d');
             if(window.ch) window.ch.destroy();
-            let b = 10000;
-            const history =[10000, ...trades.filter(t => t.status === 'FINISHED').map(t => b += t.pnl)];
             
+            let startingBalance = fund - trades.filter(t => t.status === 'FINISHED').reduce((acc, t) => acc + t.pnl, 0);
+            let b = startingBalance;
+            
+            const history =[startingBalance, ...trades.filter(t => t.status === 'FINISHED').map(t => b += t.pnl)];
             const displayHistory = history.slice(-30); 
 
             let gradient = ctx.createLinearGradient(0, 0, 0, 400);
@@ -423,9 +505,7 @@
                 type: 'line',
                 data: {
                     labels: displayHistory.map((_, i) => i),
-                    datasets:[{ 
-                        data: displayHistory, borderColor: '#ffcf40', borderWidth: 3, tension: 0.3, fill: true, backgroundColor: gradient, pointRadius: 0, pointHitRadius: 20
-                    }]
+                    datasets:[{ data: displayHistory, borderColor: '#ffcf40', borderWidth: 3, tension: 0.3, fill: true, backgroundColor: gradient, pointRadius: 0, pointHitRadius: 20 }]
                 },
                 options: { 
                     responsive: true, maintainAspectRatio: false, 
@@ -436,22 +516,9 @@
             });
         }
 
-        function showToast(msg) {
-            const t = document.getElementById('toast');
-            t.innerText = msg;
-            t.classList.add('show');
-            setTimeout(() => t.classList.remove('show'), 3000);
-        }
-
-        function resetData() { 
-            if(confirm("⚙️ Are you sure you want to completely clear all local data? This cannot be undone.")) { 
-                localStorage.removeItem('tj_elite_fund_v2');
-                localStorage.removeItem('tj_elite_trades_v2');
-                location.reload(); 
-            } 
-        }
+        function showToast(msg) { const t = document.getElementById('toast'); t.innerText = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3000); }
+        function resetData() { if(confirm("⚙️ Are you sure you want to completely clear all local data? This cannot be undone.")) { localStorage.clear(); location.reload(); } }
         
-        // Initialize
         window.onload = () => { setStatus('ONGOING'); renderHome(); };
     </script>
 </body>

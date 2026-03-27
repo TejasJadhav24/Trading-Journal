@@ -6,12 +6,12 @@
     <meta name="theme-color" content="#050508">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Trading Journal | Elite Edition</title>
+    <title>Trading Journal</title>
     
-    <!-- PWA MANIFEST & APP ICONS (Generated Internally via Code) -->
-    <link rel="manifest" id="manifest-link">
-    <!-- MINIMALIST UPWARD TREND ICON -->
-    <link rel="apple-touch-icon" href="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20512%20512%22%3E%3Crect%20width%3D%22512%22%20height%3D%22512%22%20fill%3D%22%23050508%22%2F%3E%3Cpolyline%20points%3D%2290%2C340%20210%2C220%20290%2C300%20430%2C160%22%20fill%3D%22none%22%20stroke%3D%22%23ffcf40%22%20stroke-width%3D%2250%22%20stroke-linejoin%3D%22miter%22%20stroke-linecap%3D%22square%22%2F%3E%3C%2Fsvg%3E">
+    <!-- REAL IMAGE LINKS FOR IPHONE & ANDROID -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon.png">
+    <link rel="icon" type="image/png" href="icon.png">
 
     <!-- Premium Font -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -137,17 +137,6 @@
     </style>
 </head>
 <body>
-
-    <!-- DYNAMIC MANIFEST GENERATOR (Injects the Trendline ICON) -->
-    <script>
-        const svgIconData = "%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20512%20512%22%3E%3Crect%20width%3D%22512%22%20height%3D%22512%22%20fill%3D%22%23050508%22%2F%3E%3Cpolyline%20points%3D%2290%2C340%20210%2C220%20290%2C300%20430%2C160%22%20fill%3D%22none%22%20stroke%3D%22%23ffcf40%22%20stroke-width%3D%2250%22%20stroke-linejoin%3D%22miter%22%20stroke-linecap%3D%22square%22%2F%3E%3C%2Fsvg%3E";
-        const manifestJSON = {
-            "name": "Trading Journal Elite", "short_name": "Journal",
-            "display": "standalone", "background_color": "#050508", "theme_color": "#050508",
-            "icons":[{ "src": "data:image/svg+xml;charset=utf-8," + svgIconData, "sizes": "512x512", "type": "image/svg+xml" }]
-        };
-        document.getElementById('manifest-link').href = "data:application/json;charset=utf-8," + encodeURIComponent(JSON.stringify(manifestJSON));
-    </script>
 
     <!-- 2-SECOND SPLASH SCREEN WITH TRENDLINE LOGO -->
     <div id="splash-screen">
@@ -279,6 +268,14 @@
             <!-- SETTINGS & DATA EXPORT VIEW -->
             <div id="view-settings" class="view">
                 <div class="card" style="max-width: 600px; margin: 0 auto;">
+                    
+                    <!-- NEW: FIX IPHONE ICON BOX -->
+                    <div style="background: rgba(124, 115, 230, 0.05); padding: 25px; border-radius: 16px; border: 1px solid rgba(124, 115, 230, 0.2); margin-bottom: 25px;">
+                        <h3 style="margin-top:0; color:var(--accent); font-size:18px;">Fix Home Screen Icon</h3>
+                        <p style="font-size:14px; color:var(--dim); margin-bottom:20px;">iPhones require a real image file to show the icon on your home screen. Click below to download your perfect Gold Trendline icon, then upload it to your GitHub repository!</p>
+                        <button class="save-btn" style="background: var(--accent); color: #fff; border: none;" onclick="downloadIcon()">🖼️ DOWNLOAD ICON.PNG</button>
+                    </div>
+
                     <div style="background: rgba(16, 185, 129, 0.05); padding: 25px; border-radius: 16px; border: 1px solid rgba(16, 185, 129, 0.2); margin-bottom: 25px;">
                         <h3 style="margin-top:0; color:var(--green); font-size:18px;">Export Backup</h3>
                         <p style="font-size:14px; color:var(--dim); margin-bottom:20px;">Download a secure copy of your trading history and funds to your device.</p>
@@ -384,6 +381,36 @@
             localStorage.setItem('tj_elite_txs_v2', JSON.stringify(transactions)); 
         }
 
+        // --- ICON GENERATOR FOR IPHONE FIX ---
+        function downloadIcon() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 512; canvas.height = 512;
+            const ctx = canvas.getContext('2d');
+            
+            // Draw Black Background
+            ctx.fillStyle = '#050508'; 
+            ctx.fillRect(0,0,512,512);
+            
+            // Draw Gold Trendline
+            ctx.strokeStyle = '#ffcf40'; 
+            ctx.lineWidth = 50;
+            ctx.lineJoin = 'miter'; 
+            ctx.lineCap = 'square';
+            
+            ctx.beginPath();
+            ctx.moveTo(90, 340); 
+            ctx.lineTo(210, 220); 
+            ctx.lineTo(290, 300); 
+            ctx.lineTo(430, 160);
+            ctx.stroke();
+            
+            // Download as PNG
+            const a = document.createElement('a');
+            a.href = canvas.toDataURL('image/png');
+            a.download = 'icon.png';
+            a.click();
+        }
+
         // --- EXPORT & IMPORT LOGIC ---
         function exportData() {
             const dataToExport = { fund: localStorage.getItem('tj_elite_fund_v2'), trades: localStorage.getItem('tj_elite_trades_v2'), txs: localStorage.getItem('tj_elite_txs_v2') };
@@ -474,7 +501,7 @@
 
         function renderBankCharts(deposits, withdraws) {
             const dCtx = document.getElementById('depositChart').getContext('2d'); if(window.dChart) window.dChart.destroy();
-            window.dChart = new Chart(dCtx, { type: 'bar', data: { labels: deposits.length ? deposits.map(d => d.date) : ['No Data'], datasets:[{ label: 'Deposit', data: deposits.length ? deposits.map(d => d.amount) : [0], backgroundColor: 'rgba(16, 185, 129, 0.4)', borderColor: '#10b981', borderWidth: 2, borderRadius: 6 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: {display: false} }, scales: { y: {grid: {color: 'rgba(255,255,255,0.05)'}, ticks: { color: '#8e8e93' }} } } });
+            window.dChart = new Chart(dCtx, { type: 'bar', data: { labels: deposits.length ? deposits.map(d => d.date) : ['No Data'], datasets:[{ label: 'Deposit', data: deposits.length ? deposits.map(d => d.amount) :[0], backgroundColor: 'rgba(16, 185, 129, 0.4)', borderColor: '#10b981', borderWidth: 2, borderRadius: 6 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: {display: false} }, scales: { y: {grid: {color: 'rgba(255,255,255,0.05)'}, ticks: { color: '#8e8e93' }} } } });
             const wCtx = document.getElementById('withdrawChart').getContext('2d'); if(window.wChart) window.wChart.destroy();
             window.wChart = new Chart(wCtx, { type: 'bar', data: { labels: withdraws.length ? withdraws.map(w => w.date) : ['No Data'], datasets:[{ label: 'Withdrawal', data: withdraws.length ? withdraws.map(w => w.amount) : [0], backgroundColor: 'rgba(239, 68, 68, 0.4)', borderColor: '#ef4444', borderWidth: 2, borderRadius: 6 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: {display: false} }, scales: { y: {grid: {color: 'rgba(255,255,255,0.05)'}, ticks: { color: '#8e8e93' }} } } });
         }

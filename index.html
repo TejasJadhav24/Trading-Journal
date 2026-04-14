@@ -6,9 +6,8 @@
     <meta name="theme-color" content="#050508">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Trading Journal</title>
+    <title>Trading Journal | Elite Edition</title>
     
-    <!-- REAL IMAGE LINKS FOR IPHONE & ANDROID -->
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icon.png">
     <link rel="icon" type="image/png" href="icon.png">
@@ -26,18 +25,21 @@
             --text: #ffffff; --dim: #8e8e93; --border: rgba(255, 255, 255, 0.08);
         }
         
+        /* Instant Black Background to prevent loading lag/flash */
+        html, body { background-color: #050508; margin: 0; padding: 0; }
         * { box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background: var(--bg-main); background-image: var(--bg-gradient); color: var(--text); margin: 0; min-height: 100vh; overflow-x: hidden; display: flex; }
+        body { background-image: var(--bg-gradient); color: var(--text); min-height: 100vh; overflow-x: hidden; display: flex; }
 
         /* --- SPLASH SCREEN --- */
         #splash-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--bg-main); background-image: var(--bg-gradient);
+            background: #050508; background-image: var(--bg-gradient);
             z-index: 99999; display: flex; flex-direction: column; 
             justify-content: center; align-items: center;
-            transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+            opacity: 1; visibility: visible;
+            transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.6s;
         }
-        #splash-screen.hidden { opacity: 0; visibility: hidden; }
+        #splash-screen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
         .splash-logo { width: 110px; filter: drop-shadow(0 0 30px rgba(255,207,64,0.4)); margin-bottom: 25px; animation: pulse 2s infinite; }
         .splash-title { font-size: 28px; font-weight: 900; color: #fff; letter-spacing: 2px; margin: 0; text-transform: uppercase; }
         .splash-quote { font-size: 13px; color: var(--gold); font-style: italic; margin-top: 10px; opacity: 0.8; letter-spacing: 1px; }
@@ -60,7 +62,7 @@
             width: 4px; height: 28px; background: var(--gold); border-radius: 0 4px 4px 0; box-shadow: 0 0 15px var(--gold); 
         }
 
-        /* --- MAIN LAYOUT (DESKTOP CENTERED) --- */
+        /* --- MAIN LAYOUT --- */
         .main-content { margin-left: 85px; width: calc(100% - 85px); padding: 40px 50px; display: flex; justify-content: center; }
         .content-wrapper { width: 100%; max-width: 1200px; }
         
@@ -147,7 +149,7 @@
         <div class="splash-quote">"Trade the plan, not the emotion."</div>
     </div>
 
-    <!-- SIDEBAR / BOTTOM NAV WITH TRENDLINE LOGO -->
+    <!-- SIDEBAR / BOTTOM NAV -->
     <nav class="sidebar">
         <svg class="side-logo" viewBox="0 0 512 512">
             <polyline points="90,340 210,220 290,300 430,160" fill="none" stroke="var(--gold)" stroke-width="50" stroke-linejoin="miter" stroke-linecap="square"/>
@@ -168,21 +170,21 @@
                     <h1 id="dynamic-title">TRADING JOURNAL</h1>
                     <div id="dynamic-quote" class="brand-quote">"Trade the plan, not the emotion."</div>
                 </div>
-                <div id="top-fund-display" class="top-fund-display">₹0</div>
+                <div id="top-fund-display" class="top-fund-display">0</div>
             </header>
 
             <!-- DASHBOARD VIEW -->
             <div id="view-home" class="view active">
                 <div class="card" style="text-align:center; border: 1px solid var(--gold); background: linear-gradient(180deg, rgba(255,207,64,0.08) 0%, transparent 100%); padding: 30px;">
                     <div class="label-row" style="justify-content:center; color: var(--gold)">CURRENT CAPITAL FUND</div>
-                    <div id="main-balance" style="font-size:42px; font-weight:900; color:var(--gold); letter-spacing: -1px;">₹0</div>
+                    <div id="main-balance" style="font-size:42px; font-weight:900; color:var(--gold); letter-spacing: -1px;">0</div>
                 </div>
 
                 <div class="four-grid">
                     <div class="small-stat"><div class="label-row">Trades</div><div id="stat-total" class="val-large">0</div></div>
                     <div class="small-stat"><div class="label-row">Win Rate</div><div id="stat-win" class="val-large" style="color:var(--green)">0%</div></div>
                     <div class="small-stat"><div class="label-row">Profit Factor</div><div id="stat-pf" class="val-large" style="color:var(--accent)">0.0</div></div>
-                    <div class="small-stat"><div class="label-row">Net P&L</div><div id="stat-net" class="val-large">₹0</div></div>
+                    <div class="small-stat"><div class="label-row">Net P&L</div><div id="stat-net" class="val-large">0</div></div>
                 </div>
 
                 <div class="dashboard-grid">
@@ -245,11 +247,11 @@
             <div id="view-bank" class="view">
                 <div class="card" style="text-align:center; border: 1px solid var(--accent); background: linear-gradient(180deg, rgba(124,115,230,0.08) 0%, transparent 100%); padding: 30px;">
                     <div class="label-row" style="justify-content:center; color: var(--accent)">AVAILABLE TRADING BALANCE</div>
-                    <div id="bank-balance" style="font-size:42px; font-weight:900; color:#fff; letter-spacing: -1px;">₹0</div>
+                    <div id="bank-balance" style="font-size:42px; font-weight:900; color:#fff; letter-spacing: -1px;">0</div>
                 </div>
                 <div class="card" style="max-width: 600px; margin: 0 auto 30px;">
                     <div class="label-row">Manage Capital</div>
-                    <input type="number" step="any" id="tx-amount" placeholder="Enter Amount (₹)" style="margin-bottom: 0;">
+                    <input type="number" step="any" id="tx-amount" placeholder="Enter Amount" style="margin-bottom: 0;">
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px;">
                         <button class="save-btn" style="background: rgba(16, 185, 129, 0.1); color: var(--green); border: 1px solid var(--green);" onclick="processTx('DEPOSIT')">⬇️ DEPOSIT</button>
                         <button class="save-btn" style="background: rgba(239, 68, 68, 0.1); color: var(--red); border: 1px solid var(--red);" onclick="processTx('WITHDRAW')">⬆️ WITHDRAW</button>
@@ -268,17 +270,33 @@
             <!-- SETTINGS & DATA EXPORT VIEW -->
             <div id="view-settings" class="view">
                 <div class="card" style="max-width: 600px; margin: 0 auto;">
-                    
-                    <!-- NEW: FIX IPHONE ICON BOX -->
-                    <div style="background: rgba(124, 115, 230, 0.05); padding: 25px; border-radius: 16px; border: 1px solid rgba(124, 115, 230, 0.2); margin-bottom: 25px;">
-                        <h3 style="margin-top:0; color:var(--accent); font-size:18px;">Fix Home Screen Icon</h3>
-                        <p style="font-size:14px; color:var(--dim); margin-bottom:20px;">iPhones require a real image file to show the icon on your home screen. Click below to download your perfect Gold Trendline icon, then upload it to your GitHub repository!</p>
-                        <button class="save-btn" style="background: var(--accent); color: #fff; border: none;" onclick="downloadIcon()">🖼️ DOWNLOAD ICON.PNG</button>
+
+                    <!-- NEW: ACCOUNT & CURRENCY MANAGEMENT -->
+                    <div style="background: rgba(255, 255, 255, 0.03); padding: 25px; border-radius: 16px; border: 1px solid var(--border); margin-bottom: 25px;">
+                        <h3 style="margin-top:0; color:var(--text); font-size:18px;">Account Preferences</h3>
+                        <p style="font-size:14px; color:var(--dim); margin-bottom:15px;">Switch between accounts and set your preferred currency. Each account has its own totally separate balance and history.</p>
+                        
+                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                            <div>
+                                <label class="label-row">Active Account</label>
+                                <select id="setting-account" onchange="switchAccount(this.value)" style="margin-bottom:0;">
+                                    <option value="1">Account 1</option>
+                                    <option value="2">Account 2</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="label-row">Currency Symbol</label>
+                                <select id="setting-currency" onchange="switchCurrency(this.value)" style="margin-bottom:0;">
+                                    <option value="₹">INR (₹)</option>
+                                    <option value="$">USD ($)</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
 
                     <div style="background: rgba(16, 185, 129, 0.05); padding: 25px; border-radius: 16px; border: 1px solid rgba(16, 185, 129, 0.2); margin-bottom: 25px;">
                         <h3 style="margin-top:0; color:var(--green); font-size:18px;">Export Backup</h3>
-                        <p style="font-size:14px; color:var(--dim); margin-bottom:20px;">Download a secure copy of your trading history and funds to your device.</p>
+                        <p style="font-size:14px; color:var(--dim); margin-bottom:20px;">Download a secure copy of ALL accounts, trading history, and funds to your device.</p>
                         <button class="save-btn" style="background: var(--green); color: #000; border: none;" onclick="exportData()">📥 DOWNLOAD BACKUP (.JSON)</button>
                     </div>
                     <div style="background: rgba(255, 207, 64, 0.05); padding: 25px; border-radius: 16px; border: 1px solid rgba(255, 207, 64, 0.2); margin-bottom: 25px;">
@@ -289,7 +307,7 @@
                     </div>
                     <div style="background: rgba(239, 68, 68, 0.05); padding: 25px; border-radius: 16px; border: 1px solid rgba(239, 68, 68, 0.2);">
                         <h3 style="margin-top:0; color:var(--red); font-size:18px;">Danger Zone</h3>
-                        <p style="font-size:14px; color:var(--dim); margin-bottom:20px;">Permanently delete all your trades, funds, and logs. This cannot be undone.</p>
+                        <p style="font-size:14px; color:var(--dim); margin-bottom:20px;">Permanently delete ALL accounts, trades, funds, and logs. This cannot be undone.</p>
                         <button class="save-btn" style="background: transparent; color: var(--red); border: 2px solid var(--red);" onclick="resetData()">🚨 FACTORY RESET</button>
                     </div>
                 </div>
@@ -301,18 +319,68 @@
     <div id="toast">Entry Saved!</div>
 
     <script>
-        // Data Initialization
-        let fund = localStorage.getItem('tj_elite_fund_v2') !== null ? parseFloat(localStorage.getItem('tj_elite_fund_v2')) : 0;
-        let trades = JSON.parse(localStorage.getItem('tj_elite_trades_v2')) ||[];
-        let transactions = JSON.parse(localStorage.getItem('tj_elite_txs_v2')) ||[]; 
+        // --- MULTI-ACCOUNT SYSTEM INITIALIZATION ---
+        let currentAcc = localStorage.getItem('tj_active_acc') || '1';
+        let currency = localStorage.getItem('tj_currency_' + currentAcc) || '₹';
+
+        // Auto-Migrate old singular data to Account 1 so nothing is lost!
+        if (localStorage.getItem('tj_elite_fund_v2') !== null && localStorage.getItem('tj_elite_fund_v2_1') === null) {
+            localStorage.setItem('tj_elite_fund_v2_1', localStorage.getItem('tj_elite_fund_v2'));
+            localStorage.setItem('tj_elite_trades_v2_1', localStorage.getItem('tj_elite_trades_v2') || '[]');
+            localStorage.setItem('tj_elite_txs_v2_1', localStorage.getItem('tj_elite_txs_v2') || '[]');
+        }
+
+        // Active Account Variables
+        let fund, trades, transactions;
+        
+        function loadAccountData() {
+            const kF = `tj_elite_fund_v2_${currentAcc}`;
+            const kT = `tj_elite_trades_v2_${currentAcc}`;
+            const kTx = `tj_elite_txs_v2_${currentAcc}`;
+
+            fund = localStorage.getItem(kF) !== null ? parseFloat(localStorage.getItem(kF)) : 0;
+            trades = JSON.parse(localStorage.getItem(kT)) ||[];
+            transactions = JSON.parse(localStorage.getItem(kTx)) ||[];
+            currency = localStorage.getItem('tj_currency_' + currentAcc) || '₹';
+        }
+
         let side = 'LONG'; let status = 'ONGOING';
 
         // --- Splash Screen & Initial Load ---
         window.onload = () => { 
-            setTimeout(() => { document.getElementById('splash-screen').classList.add('hidden'); }, 2000); 
+            loadAccountData();
+            document.getElementById('setting-account').value = currentAcc;
+            document.getElementById('setting-currency').value = currency;
+            
             setStatus('ONGOING'); 
             renderHome(); 
+            
+            // Adjusted splash timing for buttery smooth experience
+            setTimeout(() => { document.getElementById('splash-screen').classList.add('hidden'); }, 1500); 
         };
+
+        // --- Account & Currency Switching ---
+        function switchAccount(acc) {
+            currentAcc = acc;
+            localStorage.setItem('tj_active_acc', currentAcc);
+            loadAccountData();
+            
+            document.getElementById('setting-currency').value = currency;
+            
+            renderHome();
+            renderBank();
+            renderJournal();
+            showToast(`Switched to Account ${acc}`);
+        }
+
+        function switchCurrency(val) {
+            currency = val;
+            localStorage.setItem('tj_currency_' + currentAcc, currency);
+            renderHome();
+            renderBank();
+            renderJournal();
+            showToast(`Currency changed to ${val}`);
+        }
 
         // --- Navigation ---
         function showTab(id, btn) {
@@ -376,47 +444,20 @@
         }
 
         function saveToStorage() {
-            localStorage.setItem('tj_elite_fund_v2', fund);
-            localStorage.setItem('tj_elite_trades_v2', JSON.stringify(trades));
-            localStorage.setItem('tj_elite_txs_v2', JSON.stringify(transactions)); 
+            localStorage.setItem(`tj_elite_fund_v2_${currentAcc}`, fund);
+            localStorage.setItem(`tj_elite_trades_v2_${currentAcc}`, JSON.stringify(trades));
+            localStorage.setItem(`tj_elite_txs_v2_${currentAcc}`, JSON.stringify(transactions)); 
         }
 
-        // --- ICON GENERATOR FOR IPHONE FIX ---
-        function downloadIcon() {
-            const canvas = document.createElement('canvas');
-            canvas.width = 512; canvas.height = 512;
-            const ctx = canvas.getContext('2d');
-            
-            // Draw Black Background
-            ctx.fillStyle = '#050508'; 
-            ctx.fillRect(0,0,512,512);
-            
-            // Draw Gold Trendline
-            ctx.strokeStyle = '#ffcf40'; 
-            ctx.lineWidth = 50;
-            ctx.lineJoin = 'miter'; 
-            ctx.lineCap = 'square';
-            
-            ctx.beginPath();
-            ctx.moveTo(90, 340); 
-            ctx.lineTo(210, 220); 
-            ctx.lineTo(290, 300); 
-            ctx.lineTo(430, 160);
-            ctx.stroke();
-            
-            // Download as PNG
-            const a = document.createElement('a');
-            a.href = canvas.toDataURL('image/png');
-            a.download = 'icon.png';
-            a.click();
-        }
-
-        // --- EXPORT & IMPORT LOGIC ---
+        // --- EXPORT & IMPORT LOGIC (ALL ACCOUNTS) ---
         function exportData() {
-            const dataToExport = { fund: localStorage.getItem('tj_elite_fund_v2'), trades: localStorage.getItem('tj_elite_trades_v2'), txs: localStorage.getItem('tj_elite_txs_v2') };
+            const dataToExport = { 
+                fund_1: localStorage.getItem('tj_elite_fund_v2_1'), trades_1: localStorage.getItem('tj_elite_trades_v2_1'), txs_1: localStorage.getItem('tj_elite_txs_v2_1'), curr_1: localStorage.getItem('tj_currency_1'),
+                fund_2: localStorage.getItem('tj_elite_fund_v2_2'), trades_2: localStorage.getItem('tj_elite_trades_v2_2'), txs_2: localStorage.getItem('tj_elite_txs_v2_2'), curr_2: localStorage.getItem('tj_currency_2')
+            };
             const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(dataToExport));
             const downloadNode = document.createElement('a'); downloadNode.setAttribute("href", dataStr);
-            downloadNode.setAttribute("download", "TradingJournal_Backup_" + new Date().toISOString().split('T')[0] + ".json");
+            downloadNode.setAttribute("download", "TradingJournal_ALL_Backup_" + new Date().toISOString().split('T')[0] + ".json");
             document.body.appendChild(downloadNode); downloadNode.click(); downloadNode.remove();
             showToast("Backup Downloaded!");
         }
@@ -427,25 +468,32 @@
             const reader = new FileReader();
             reader.onload = function(e) {
                 try {
-                    const importedData = JSON.parse(e.target.result);
-                    if (importedData.fund) localStorage.setItem('tj_elite_fund_v2', importedData.fund);
-                    if (importedData.trades) localStorage.setItem('tj_elite_trades_v2', importedData.trades);
-                    if (importedData.txs) localStorage.setItem('tj_elite_txs_v2', importedData.txs);
+                    const imp = JSON.parse(e.target.result);
+                    if (imp.fund_1 !== undefined) localStorage.setItem('tj_elite_fund_v2_1', imp.fund_1);
+                    if (imp.trades_1 !== undefined) localStorage.setItem('tj_elite_trades_v2_1', imp.trades_1);
+                    if (imp.txs_1 !== undefined) localStorage.setItem('tj_elite_txs_v2_1', imp.txs_1);
+                    if (imp.curr_1 !== undefined) localStorage.setItem('tj_currency_1', imp.curr_1);
+                    
+                    if (imp.fund_2 !== undefined) localStorage.setItem('tj_elite_fund_v2_2', imp.fund_2);
+                    if (imp.trades_2 !== undefined) localStorage.setItem('tj_elite_trades_v2_2', imp.trades_2);
+                    if (imp.txs_2 !== undefined) localStorage.setItem('tj_elite_txs_v2_2', imp.txs_2);
+                    if (imp.curr_2 !== undefined) localStorage.setItem('tj_currency_2', imp.curr_2);
+                    
                     alert("Data Restored Successfully! The app will now reload."); location.reload();
                 } catch (err) { alert("Error: Invalid backup file."); }
             };
             reader.readAsText(file);
         }
 
-        function resetData() { if(confirm("🚨 WARNING: Are you sure you want to completely clear all local data? This cannot be undone.")) { localStorage.clear(); location.reload(); } }
+        function resetData() { if(confirm("🚨 WARNING: Are you sure you want to completely clear ALL data across ALL accounts? This cannot be undone.")) { localStorage.clear(); location.reload(); } }
 
         // --- Rendering Logic ---
         function renderHome() {
-            document.getElementById('top-fund-display').innerText = `₹${fund.toLocaleString()}`;
-            document.getElementById('main-balance').innerText = `₹${fund.toLocaleString()}`;
+            document.getElementById('top-fund-display').innerText = `${currency}${fund.toLocaleString()}`;
+            document.getElementById('main-balance').innerText = `${currency}${fund.toLocaleString()}`;
             const closed = trades.filter(t => t.status === 'FINISHED'); document.getElementById('stat-total').innerText = closed.length;
             const wins = closed.filter(t => t.pnl > 0); document.getElementById('stat-win').innerText = closed.length ? Math.round((wins.length / closed.length) * 100) + '%' : '0%';
-            document.getElementById('stat-net').innerText = `₹${closed.reduce((a, b) => a + b.pnl, 0).toFixed(0)}`;
+            document.getElementById('stat-net').innerText = `${currency}${closed.reduce((a, b) => a + b.pnl, 0).toFixed(0)}`;
 
             let grossProfits = closed.reduce((acc, t) => acc + (t.grossP || 0), 0), grossLosses = closed.reduce((acc, t) => acc + (t.grossL || 0), 0);
             document.getElementById('stat-pf').innerText = grossLosses === 0 ? (grossProfits > 0 ? '∞' : '1.0') : (grossProfits / grossLosses).toFixed(2);
@@ -463,7 +511,7 @@
                 strip.innerHTML = trades.slice(-6).reverse().map(t => `
                     <div class="trade-tile ${t.status === 'FINISHED' ? (t.pnl >= 0 ? 'tile-win' : 'tile-loss') : ''}">
                         <div style="font-size: 10px; color: var(--dim)">${t.date}</div><div style="font-weight: 800; font-size: 14px; margin: 6px 0;">${t.market}</div>
-                        <div style="font-weight: 700; color: ${t.pnl >= 0 ? 'var(--green)' : 'var(--red)'}">${t.status === 'ONGOING' ? 'LIVE' : (t.pnl >= 0 ? '+' : '') + '₹' + t.pnl.toFixed(0)}</div>
+                        <div style="font-weight: 700; color: ${t.pnl >= 0 ? 'var(--green)' : 'var(--red)'}">${t.status === 'ONGOING' ? 'LIVE' : (t.pnl >= 0 ? '+' : '') + currency + t.pnl.toFixed(0)}</div>
                     </div>`).join('');
             }
             renderChart();
@@ -477,24 +525,24 @@
                     <button class="del-btn" onclick="deleteTrade(${t.id})">Delete</button>
                     <div style="display:flex; justify-content:space-between; margin-bottom: 8px;">
                         <span style="font-size:11px; color:var(--dim); background:rgba(255,255,255,0.05); padding:4px 10px; border-radius:8px;">${t.date}</span>
-                        <div style="font-weight:900; font-size:22px; color:${t.pnl >= 0 ? 'var(--green)' : 'var(--red)'}">${t.status === 'ONGOING' ? 'LIVE' : '₹' + t.pnl.toFixed(2)}</div>
+                        <div style="font-weight:900; font-size:22px; color:${t.pnl >= 0 ? 'var(--green)' : 'var(--red)'}">${t.status === 'ONGOING' ? 'LIVE' : currency + t.pnl.toFixed(2)}</div>
                     </div>
                     <div style="font-size: 16px; font-weight: 700; color:#fff;">${t.side} - ${t.market}</div><div style="font-size: 14px; font-weight: 500; color: #ddd; line-height: 1.5; margin: 12px 0;">"${t.note}"</div>
-                    <div class="trade-specs"><div><b>STRATEGY:</b> ${t.strat}</div><div><b>EMOTION:</b> ${t.emotion}</div><div><b>LOT SIZE:</b> ${t.qty}</div><div><b>FEES:</b> ₹${t.fees || 0}</div></div>
+                    <div class="trade-specs"><div><b>STRATEGY:</b> ${t.strat}</div><div><b>EMOTION:</b> ${t.emotion}</div><div><b>LOT SIZE:</b> ${t.qty}</div><div><b>FEES:</b> ${currency}${t.fees || 0}</div></div>
                 </div>`).join('');
         }
 
         function renderBank() {
-            document.getElementById('bank-balance').innerText = `₹${fund.toLocaleString()}`; document.getElementById('top-fund-display').innerText = `₹${fund.toLocaleString()}`; 
+            document.getElementById('bank-balance').innerText = `${currency}${fund.toLocaleString()}`; document.getElementById('top-fund-display').innerText = `${currency}${fund.toLocaleString()}`; 
             const deposits = transactions.filter(t => t.type === 'DEPOSIT'), withdraws = transactions.filter(t => t.type === 'WITHDRAW');
 
             const dContainer = document.getElementById('deposit-history-container');
             if(deposits.length === 0) { dContainer.innerHTML = `<div style="color:var(--dim); font-size:13px; text-align:center; padding: 20px;">No deposits yet.</div>`; } 
-            else { dContainer.innerHTML = deposits.slice().reverse().map(tx => `<div class="tx-row"><div><div style="font-weight: 800; color: var(--green)">${tx.type}</div><div style="font-size: 11px; color: var(--dim); margin-top:4px;">${tx.date}</div></div><div style="font-weight: 800; font-size: 18px; color: var(--green)">+ ₹${tx.amount.toLocaleString()}</div></div>`).join(''); }
+            else { dContainer.innerHTML = deposits.slice().reverse().map(tx => `<div class="tx-row"><div><div style="font-weight: 800; color: var(--green)">${tx.type}</div><div style="font-size: 11px; color: var(--dim); margin-top:4px;">${tx.date}</div></div><div style="font-weight: 800; font-size: 18px; color: var(--green)">+ ${currency}${tx.amount.toLocaleString()}</div></div>`).join(''); }
 
             const wContainer = document.getElementById('withdraw-history-container');
             if(withdraws.length === 0) { wContainer.innerHTML = `<div style="color:var(--dim); font-size:13px; text-align:center; padding: 20px;">No withdrawals yet.</div>`; } 
-            else { wContainer.innerHTML = withdraws.slice().reverse().map(tx => `<div class="tx-row"><div><div style="font-weight: 800; color: var(--red)">${tx.type}</div><div style="font-size: 11px; color: var(--dim); margin-top:4px;">${tx.date}</div></div><div style="font-weight: 800; font-size: 18px; color: var(--red)">- ₹${tx.amount.toLocaleString()}</div></div>`).join(''); }
+            else { wContainer.innerHTML = withdraws.slice().reverse().map(tx => `<div class="tx-row"><div><div style="font-weight: 800; color: var(--red)">${tx.type}</div><div style="font-size: 11px; color: var(--dim); margin-top:4px;">${tx.date}</div></div><div style="font-weight: 800; font-size: 18px; color: var(--red)">- ${currency}${tx.amount.toLocaleString()}</div></div>`).join(''); }
 
             renderBankCharts(deposits, withdraws);
         }

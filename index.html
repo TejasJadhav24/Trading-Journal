@@ -121,6 +121,26 @@
         #toast { position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%); background: var(--green); color: #000; padding: 12px 24px; border-radius: 30px; font-weight: 700; transition: 0.4s; z-index: 9999; box-shadow: 0 10px 30px rgba(16, 185, 129, 0.4); }
         #toast.show { bottom: 100px; }
 
+        /* --- NEW P&L CALENDAR CSS --- */
+        .cal-container { overflow-x: auto; padding-bottom: 10px; }
+        .calendar-grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 4px; min-width: 800px; margin-top: 15px; }
+        .cal-header { font-size: 12px; font-weight: 700; color: var(--dim); text-align: center; margin-bottom: 5px; }
+        .cal-cell { background: #2a2e39; border-radius: 4px; padding: 8px; min-height: 85px; display: flex; flex-direction: column; justify-content: space-between; border: 1px solid #1f2330; }
+        .cal-day-num { font-size: 11px; font-weight: 600; align-self: flex-start; color: #fff; }
+        .cal-pnl { font-size: 14px; font-weight: 800; text-align: center; margin-top: auto; }
+        .cal-trades { font-size: 11px; text-align: center; margin-top: 4px; }
+
+        /* Exact Solid Colors from your image */
+        .cal-win { background: #5cd67a; border: none; }
+        .cal-win .cal-pnl, .cal-win .cal-day-num, .cal-win .cal-trades { color: #000; }
+
+        .cal-loss { background: #ff6b6b; border: none; }
+        .cal-loss .cal-pnl, .cal-loss .cal-day-num, .cal-loss .cal-trades { color: #000; }
+
+        .cal-empty { opacity: 0.3; background: transparent; border: none; }
+        .cal-btn { background: rgba(255,255,255,0.1); border:none; color: white; border-radius: 6px; width: 30px; height: 30px; cursor: pointer; }
+        .cal-btn:hover { background: var(--accent); }
+
         /* =========================================
            MOBILE RESPONSIVENESS (WITH IPHONE NOTCH FIX)
         ========================================= */
@@ -195,6 +215,21 @@
                     <div style="display: flex; flex-direction: column; gap: 20px;">
                         <div class="card" style="flex: 1;"><div class="label-row" style="color:var(--accent)">Latest Lesson</div><div id="home-lesson" style="font-size: 14px; color: #ddd; line-height: 1.5; font-weight: 500;">No lessons logged yet.</div></div>
                         <div class="card" style="flex: 1;"><div class="label-row" style="color:var(--gold)">Market Focus</div><div id="market-stats" style="font-size: 16px; font-weight: 700; color: #fff;">Waiting for data...</div></div>
+                    </div>
+                </div>
+
+                <!-- NEW: P&L CALENDAR INJECTED HERE -->
+                <div class="card" style="padding-bottom: 30px;">
+                    <div class="label-row" style="color:var(--accent); justify-content: space-between;">
+                        <span>P&L Calendar History</span>
+                        <div style="display:flex; gap:15px; align-items:center; color: #fff;">
+                            <button class="cal-btn" onclick="changeMonth(-1)">◀</button>
+                            <span id="cal-month-year" style="font-size:14px; font-weight:800; min-width: 130px; text-align: center;">...</span>
+                            <button class="cal-btn" onclick="changeMonth(1)">▶</button>
+                        </div>
+                    </div>
+                    <div class="cal-container">
+                        <div id="calendar-grid" class="calendar-grid"></div>
                     </div>
                 </div>
 
@@ -322,6 +357,7 @@
         // --- MULTI-ACCOUNT SYSTEM INITIALIZATION ---
         let currentAcc = localStorage.getItem('tj_active_acc') || '1';
         let currency = localStorage.getItem('tj_currency_' + currentAcc) || '₹';
+        let currentCalDate = new Date(); // NEW: Used for Calendar month switching
 
         // Auto-Migrate old singular data to Account 1 so nothing is lost!
         if (localStorage.getItem('tj_elite_fund_v2') !== null && localStorage.getItem('tj_elite_fund_v2_1') === null) {
@@ -410,7 +446,7 @@
             let net = 0; if(status === 'FINISHED') net = p - l - fees;
 
             const entry = {
-                id: Date.now(), market: document.getElementById('t-market').value,
+                id: Date.now(), timestamp: Date.now(), market: document.getElementById('t-market').value,
                 pnl: net, grossP: p, grossL: l, fees: fees, side: side, status: status,
                 qty: document.getElementById('t-qty').value || '-',
                 strat: document.getElementById('t-strat').value || 'Manual',
@@ -487,6 +523,70 @@
 
         function resetData() { if(confirm("🚨 WARNING: Are you sure you want to completely clear ALL data across ALL accounts? This cannot be undone.")) { localStorage.clear(); location.reload(); } }
 
+        // --- NEW CALENDAR SYSTEM ---
+        function changeMonth(dir) { 
+            currentCalDate.setMonth(currentCalDate.getMonth() + dir); 
+            renderCalendar(); 
+        }
+
+        function renderCalendar() {
+            document.getElementById('cal-month-year').innerText = currentCalDate.toLocaleDateString('en-US', {month: 'long', year:'numeric'});
+            
+            const dailyData = {};
+            trades.filter(t => t.status === 'FINISHED').forEach(t => {
+                const d = t.timestamp ? new Date(t.timestamp) : new Date(t.date);
+                if(isNaN(d)) return;
+                const key = d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate();
+                if(!dailyData[key]) dailyData[key] = { pnl: 0, count: 0 };
+                dailyData[key].pnl += t.pnl; 
+                dailyData[key].count++;
+            });
+
+            const year = currentCalDate.getFullYear(); 
+            const month = currentCalDate.getMonth();
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+            let html = `<div class="cal-header">Su</div><div class="cal-header">Mo</div><div class="cal-header">Tu</div><div class="cal-header">We</div><div class="cal-header">Th</div><div class="cal-header">Fr</div><div class="cal-header">Sa</div><div class="cal-header" style="color:var(--accent);">Σ Week</div>`;
+            
+            let dayCounter = 1; let weekPnl = 0; let weekTrades = 0;
+            
+            for (let i = 0; i < 6; i++) {
+                let rowHtml = ''; let weekHasDays = false;
+                
+                for (let j = 0; j < 7; j++) {
+                    if ((i === 0 && j < firstDay) || dayCounter > daysInMonth) {
+                        rowHtml += `<div class="cal-cell cal-empty"></div>`;
+                    } else {
+                        weekHasDays = true;
+                        const data = dailyData[year + '-' + month + '-' + dayCounter];
+                        
+                        if (data) { weekPnl += data.pnl; weekTrades += data.count; }
+                        
+                        let cls = 'cal-cell' + (data ? (data.pnl >= 0 ? ' cal-win' : ' cal-loss') : '');
+                        let pTxt = data ? ((data.pnl >= 0 ? '+' : '') + currency + data.pnl.toFixed(2)) : '';
+                        let tTxt = data ? (data.count + ' trades') : '';
+
+                        rowHtml += `<div class="${cls}"><div class="cal-day-num">${dayCounter}</div><div class="cal-pnl">${pTxt}</div><div class="cal-trades">${tTxt}</div></div>`;
+                        dayCounter++;
+                    }
+                }
+                
+                if (weekHasDays) {
+                    let wCls = 'cal-cell' + (weekTrades > 0 ? (weekPnl >= 0 ? ' cal-win' : ' cal-loss') : '');
+                    let wPnlTxt = weekTrades > 0 ? ((weekPnl >= 0 ? '+' : '') + currency + weekPnl.toFixed(2)) : '';
+                    let wTrTxt = weekTrades > 0 ? (weekTrades + ' trades') : '';
+                    
+                    rowHtml += `<div class="${wCls}"><div class="cal-day-num">Week</div><div class="cal-pnl">${wPnlTxt}</div><div class="cal-trades">${wTrTxt}</div></div>`;
+                    
+                    html += rowHtml; 
+                    weekPnl = 0; weekTrades = 0;
+                }
+                if (dayCounter > daysInMonth) break;
+            }
+            document.getElementById('calendar-grid').innerHTML = html;
+        }
+
         // --- Rendering Logic ---
         function renderHome() {
             document.getElementById('top-fund-display').innerText = `${currency}${fund.toLocaleString()}`;
@@ -515,6 +615,7 @@
                     </div>`).join('');
             }
             renderChart();
+            renderCalendar(); // Renders the new Calendar!
         }
 
         function renderJournal() {
